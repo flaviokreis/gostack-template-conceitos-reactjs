@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import api from "./services/api";
 
+import Repository from './components/Repository';
+
 import "./styles.css";
 
 function App() {
@@ -32,25 +34,17 @@ function App() {
 
   async function handleRemoveRepository(id) {
     await api.delete(`/repositories/${id}`);
-    
+
     setRepositories(repositories.filter(repository => repository.id !== id));
-  }
-  
+  }  
 
   return (
     <div>
       <ul data-testid="repository-list">
-      { repositories.map(repository => (
-            <li key={repository.id}>
-              {repository.title}
-
-              <button onClick={() => handleRemoveRepository(repository.id)}>
-                Remover
-              </button>
-            </li>
-          )
-        ) 
-      }
+      { repositories.map(repository => 
+          <Repository 
+            repository={repository}
+            onDelete={(id) => handleRemoveRepository(id)} />) }
       </ul>
 
       <button onClick={handleAddRepository}>Adicionar</button>
